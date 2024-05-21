@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Museum Digitization Cost Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #e1faf6;
+            margin: 50px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        h2 {
+            color: #273169;
+        }
+
+        label {
+            display: inline-block;
+            width: 400px;
+            margin-bottom: 10px;
+        }
+
+        input[type="number"] {
+            padding: 5px;
+            width: 200px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+
+        button {
+            padding: 13px 25px;
+            background-color: #39bce0;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-left: 405px;
+        }
+
+        button:hover {
+            background-color: #1b58c1;
+        }
+
+        #container {
+            display: flex;
+            flex-direction: row;
+            gap: 20px;
+        }
+
+        #details {
+            flex: 1;
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #f3f9fc;
+            border: 1px solid #c40d0d;
+            border-radius: 3px;
+        }
+
+        #details h3 {
+            color: #26bb0c;
+            margin-bottom: 10px;
+        }
+
+        #details p {
+            margin: 5px;
+            font-size: 20px;
+        }
+
+        #chart-container {
+            flex: 1;
+        }
+
+        #myChart {
+            width: 100%;
+            height: 400px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Cost Calculator for Digitizing The World Museum's Collection</h1>
+    <h2>Cost details</h2>
+    <label for="ep_c">Cost of Imaging equipment/each:</label>
+    <input type="number" id="ep_c" name="ep_c" required><br>
+    <label for="n_ep">Number of imaging equipments:</label>
+    <input type="number" id="n_ep" name="n_ep" required><br>
+    <label for="n_p">Number of hiring and training personnel:</label>
+    <input type="number" id="n_p" name="n_p" required><br>
+    <label for="p_c">Cost/each person:</label>
+    <input type="number" id="p_c" name="p_c" required><br>
+    <label for="c_mg">Cost of producing movies, video games:</label>
+    <input type="number" id="c_mg" name="c_mg" required><br>
+    <label for="c_pd">Cost of online platforms and applications development:</label>
+    <input type="number" id="c_pd" name="c_pd" required><br>
+    <label for="VR">Cost of VR Hardware and Software:</label>
+    <input type="number" id="VR" name="VR" required><br>
+    <label for="ai">Cost of AI/ML system:</label>
+    <input type="number" id="ai" name="ai" required><br>
+    <label for="opm">Cost of ongoing project management</label>
+    <input type="number" id="opm" name="opm" required><br>
+    <label for="itc">Cost of interdisciplinary team coordination</label>
+    <input type="number" id="itc" name="itc" required><br>
+    <label for="mod">Cost of monitor and optimize the digitization process</label>
+    <input type="number" id="mod" name="mod" required><br>
+    <button onclick="calculateCost()">Calculate</button>
+    <h2>Cost Breakdown:</h2>
+    <div id="container">
+        <div id="details"></div>
+        <div id="chart-container">
+            <canvas id="myChart"></canvas>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        let myChart = null;
+
+        function calculateCost() {
+            const ep_c = parseInt(document.getElementById("ep_c").value) || 0;
+            const n_ep = parseInt(document.getElementById("n_ep").value) || 0;
+            const ep_cost = ep_c * n_ep;
+            const p_c = parseInt(document.getElementById("p_c").value) || 0;
+            const n_p = parseInt(document.getElementById("n_p").value) || 0;
+            const labor_c = p_c * n_p;
+            const dp_c = (parseInt(document.getElementById("c_mg").value) || 0) + (parseInt(document.getElementById("c_pd").value) || 0);
+            const ai = parseInt(document.getElementById("ai").value) || 0;
+            const VR = parseInt(document.getElementById("VR").value) || 0;
+            const Tec = ai + VR;
+            const opm = parseInt(document.getElementById("opm").value) || 0;
+            const itc = parseInt(document.getElementById("itc").value) || 0;
+            const mod = parseInt(document.getElementById("mod").value) || 0;
+            const mac = opm + itc + mod;
+            const total_cost = ep_cost + labor_c + dp_c + Tec + mac;
+
+            let resultHTML = "";
+            resultHTML += "<p>Equipment cost: " + ep_cost + "</p>";
+            resultHTML += "<p>Labor cost: " + labor_c + "</p>";
+            resultHTML += "<p>Number of Personnel: " + n_p + "</p>";
+            resultHTML += "<p>Content development and digital asset production cost: " + dp_c + "</p>";
+            resultHTML += "<p>Technology cost: " + Tec + "</p>";
+            resultHTML += "<p>Cost of project management and coordination: " + mac + "</p>";
+            resultHTML += "<h2>Total cost: $" + total_cost + "</h2>";
+            document.getElementById("details").innerHTML = resultHTML;
+
+            const labels = ['Equipment Cost', 'Labor Cost', 'Content Development', 'Technology Cost', 'Project Management'];
+            const data = [ep_cost, labor_c, dp_c, Tec, mac];
+
+            if (myChart) {
+                myChart.destroy();
+            }
+
+            const ctx = document.getElementById('myChart').getContext('2d');
+            myChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Cost Breakdown',
+                        data: data,
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        fill: false,
+                        lineTension: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    title: {
+                        display: true,
+                        text: 'Cost Breakdown Line Chart'
+                    },
+                    tooltips: {
+                        mode: 'index',
+                        intersect: false,
+                    },
+                    hover: {
+                        mode: 'nearest',
+                        intersect: true
+                    },
+                    scales: {
+                        xAxes: [{
+                            display: true,
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'Cost Categories'
+                            }
+                        }],
+                        yAxes: [{
+                            display: true,
+                            scaleLabel: {
+                                display: true,
+                                labelString: 'Cost in $'
+                            }
+                        }]
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>
+
+
