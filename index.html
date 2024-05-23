@@ -6,13 +6,15 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #e1faf6;
+            background-color: #2d9898;
             margin: 50px;
+            position: relative;
         }
 
         h1 {
             text-align: center;
             color: #333;
+            margin-bottom: 50px;
         }
 
         h2 {
@@ -39,7 +41,7 @@
             border: none;
             border-radius: 4px;
             cursor: pointer;
-            margin-left: 405px;
+            margin-top: 10px;
         }
 
         button:hover {
@@ -49,71 +51,106 @@
         #container {
             display: flex;
             flex-direction: row;
-            gap: 20px;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        #form-container {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        #cost-details, #cost-breakdown {
+            flex: 1;
+            padding: 10px;
+            background-color: #b5fddf;
+            border: 1px solid #c40d0d;
+            border-radius: 3px;
+            margin-right: 10px;
+        }
+
+        #cost-details {
+            margin-right: 20px;
+        }
+
+        #cost-details h2, #cost-breakdown h2 {
+            font-size: 20px;
+            margin-top: 0;
         }
 
         #details {
-            flex: 1;
-            margin-top: 20px;
-            padding: 10px;
-            background-color: #f3f9fc;
-            border: 1px solid #c40d0d;
-            border-radius: 3px;
-        }
-
-        #details h3 {
-            color: #26bb0c;
-            margin-bottom: 10px;
-        }
-
-        #details p {
-            margin: 5px;
+            margin-top: 10px;
             font-size: 20px;
         }
 
         #chart-container {
             flex: 1;
+            margin-left: 20px;
         }
 
         #myChart {
             width: 100%;
             height: 400px;
+            background-color: aliceblue;
+        }
+
+        #image-container {
+            flex: 1;
+            margin-right: 20px;
+        }
+
+        #image-container img {
+            width: 100%;
+            height: auto;
+            border-radius: 3px;
         }
     </style>
 </head>
 <body>
     <h1>Cost Calculator for Digitizing The World Museum's Collection</h1>
-    <h2>Cost details</h2>
-    <label for="ep_c">Cost of Imaging equipment/each:</label>
-    <input type="number" id="ep_c" name="ep_c" required><br>
-    <label for="n_ep">Number of imaging equipments:</label>
-    <input type="number" id="n_ep" name="n_ep" required><br>
-    <label for="n_p">Number of hiring and training personnel:</label>
-    <input type="number" id="n_p" name="n_p" required><br>
-    <label for="p_c">Cost/each person:</label>
-    <input type="number" id="p_c" name="p_c" required><br>
-    <label for="c_mg">Cost of producing movies, video games:</label>
-    <input type="number" id="c_mg" name="c_mg" required><br>
-    <label for="c_pd">Cost of online platforms and applications development:</label>
-    <input type="number" id="c_pd" name="c_pd" required><br>
-    <label for="VR">Cost of VR Hardware and Software:</label>
-    <input type="number" id="VR" name="VR" required><br>
-    <label for="ai">Cost of AI/ML system:</label>
-    <input type="number" id="ai" name="ai" required><br>
-    <label for="opm">Cost of ongoing project management</label>
-    <input type="number" id="opm" name="opm" required><br>
-    <label for="itc">Cost of interdisciplinary team coordination</label>
-    <input type="number" id="itc" name="itc" required><br>
-    <label for="mod">Cost of monitor and optimize the digitization process</label>
-    <input type="number" id="mod" name="mod" required><br>
-    <button onclick="calculateCost()">Calculate</button>
-    <h2>Cost Breakdown:</h2>
+    <div id="form-container">
+        <div id="cost-details">
+            <h2>Cost details</h2>
+            <label for="ep_c">Cost of Imaging equipment/each:</label>
+            <input type="number" id="ep_c" name="ep_c" required><br>
+            <label for="n_ep">Number of imaging equipments:</label>
+            <input type="number" id="n_ep" name="n_ep" required><br>
+            <label for="n_p">Number of hiring and training personnel:</label>
+            <input type="number" id="n_p" name="n_p" required><br>
+            <label for="p_c">Cost/each person:</label>
+            <input type="number" id="p_c" name="p_c" required><br>
+            <label for="c_mg">Cost of producing movies, video games:</label>
+            <input type="number" id="c_mg" name="c_mg" required><br>
+            <label for="c_pd">Cost of online platforms and applications development:</label>
+            <input type="number" id="c_pd" name="c_pd" required><br>
+            <label for="VR">Cost of VR Hardware and Software:</label>
+            <input type="number" id="VR" name="VR" required><br>
+            <label for="ai">Cost of AI/ML system:</label>
+            <input type="number" id="ai" name="ai" required><br>
+            <label for="opm">Cost of ongoing project management</label>
+            <input type="number" id="opm" name="opm" required><br>
+            <label for="itc">Cost of interdisciplinary team coordination</label>
+            <input type="number" id="itc" name="itc" required><br>
+            <label for="mod">Cost of monitor and optimize the digitization process</label>
+            <input type="number" id="mod" name="mod" required><br>
+            <button onclick="calculateCost()">Calculate</button>
+        </div>
+        <div id="cost-breakdown">
+            <h2>Cost Breakdown:</h2>
+            <div id="details"></div>
+        </div>
+    </div>
+
     <div id="container">
-        <div id="details"></div>
+        <div id="image-container">
+            <img src="museum.jpeg" alt="Museum Image">
+        </div>
         <div id="chart-container">
             <canvas id="myChart"></canvas>
         </div>
     </div>
+
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         let myChart = null;
@@ -160,8 +197,8 @@
                     datasets: [{
                         label: 'Cost Breakdown',
                         data: data,
-                        borderColor: 'rgba(75, 192, 192, 1)',
-                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderColor: 'rgba(255, 0, 0, 1)',
+                        backgroundColor: 'rgba(255, 0, 0, 0.2)', 
                         fill: false,
                         lineTension: 0
                     }]
@@ -202,5 +239,3 @@
     </script>
 </body>
 </html>
-
-
