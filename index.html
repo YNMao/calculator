@@ -10,30 +10,25 @@
             margin: 50px;
             position: relative;
         }
-
         h1 {
             text-align: center;
             color: #333;
             margin-bottom: 50px;
         }
-
         h2 {
             color: #273169;
         }
-
         label {
             display: inline-block;
             width: 400px;
             margin-bottom: 10px;
         }
-
         input[type="number"] {
             padding: 5px;
             width: 200px;
             border: 1px solid #ccc;
             border-radius: 3px;
         }
-
         button {
             padding: 13px 25px;
             background-color: #39bce0;
@@ -43,24 +38,20 @@
             cursor: pointer;
             margin-top: 10px;
         }
-
         button:hover {
             background-color: #1b58c1;
         }
-
         #container {
             display: flex;
             flex-direction: row;
             justify-content: space-between;
             margin-top: 20px;
         }
-
         #form-container {
             display: flex;
             justify-content: space-between;
             margin-bottom: 20px;
         }
-
         #cost-details, #cost-breakdown {
             flex: 1;
             padding: 10px;
@@ -69,37 +60,30 @@
             border-radius: 3px;
             margin-right: 10px;
         }
-
         #cost-details {
             margin-right: 20px;
         }
-
         #cost-details h2, #cost-breakdown h2 {
             font-size: 20px;
             margin-top: 0;
         }
-
         #details {
             margin-top: 10px;
             font-size: 20px;
         }
-
         #chart-container {
             flex: 1;
             margin-left: 20px;
         }
-
         #myChart {
             width: 100%;
             height: 400px;
             background-color: aliceblue;
         }
-
         #image-container {
             flex: 1;
             margin-right: 20px;
         }
-
         #image-container img {
             width: 100%;
             height: auto;
@@ -116,10 +100,12 @@
             <input type="number" id="ep_c" name="ep_c" required><br>
             <label for="n_ep">Number of imaging equipments:</label>
             <input type="number" id="n_ep" name="n_ep" required><br>
-            <label for="n_p">Number of hiring and training personnel:</label>
-            <input type="number" id="n_p" name="n_p" required><br>
-            <label for="p_c">Cost/each person:</label>
-            <input type="number" id="p_c" name="p_c" required><br>
+            <label for="avg_time">Average time allocated for imaging each equipment (hours):</label>
+            <input type="number" id="avg_time" name="avg_time" required><br>
+            <label for="n_items">Number of items to be imaged:</label>
+            <input type="number" id="n_items" name="n_items" required><br>
+            <label for="wage">Wage per hour for imaging staff:</label>
+            <input type="number" id="wage" name="wage" required><br>
             <label for="c_mg">Cost of producing movies, video games:</label>
             <input type="number" id="c_mg" name="c_mg" required><br>
             <label for="c_pd">Cost of online platforms and applications development:</label>
@@ -128,11 +114,11 @@
             <input type="number" id="VR" name="VR" required><br>
             <label for="ai">Cost of AI/ML system:</label>
             <input type="number" id="ai" name="ai" required><br>
-            <label for="opm">Cost of ongoing project management</label>
+            <label for="opm">Cost of ongoing project management:</label>
             <input type="number" id="opm" name="opm" required><br>
-            <label for="itc">Cost of interdisciplinary team coordination</label>
+            <label for="itc">Cost of interdisciplinary team coordination:</label>
             <input type="number" id="itc" name="itc" required><br>
-            <label for="mod">Cost of monitor and optimize the digitization process</label>
+            <label for="mod">Cost of monitoring and optimizing the digitization process:</label>
             <input type="number" id="mod" name="mod" required><br>
             <button onclick="calculateCost()">Calculate</button>
         </div>
@@ -141,7 +127,6 @@
             <div id="details"></div>
         </div>
     </div>
-
     <div id="container">
         <div id="image-container">
             <img src="museum.jpeg" alt="Museum Image">
@@ -150,7 +135,6 @@
             <canvas id="myChart"></canvas>
         </div>
     </div>
-
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         let myChart = null;
@@ -159,9 +143,12 @@
             const ep_c = parseInt(document.getElementById("ep_c").value) || 0;
             const n_ep = parseInt(document.getElementById("n_ep").value) || 0;
             const ep_cost = ep_c * n_ep;
-            const p_c = parseInt(document.getElementById("p_c").value) || 0;
-            const n_p = parseInt(document.getElementById("n_p").value) || 0;
-            const labor_c = p_c * n_p;
+
+            const avg_time = parseInt(document.getElementById("avg_time").value) || 0;
+            const n_items = parseInt(document.getElementById("n_items").value) || 0;
+            const wage = parseInt(document.getElementById("wage").value) || 0;
+            const labor_c = n_items * avg_time * wage;
+
             const dp_c = (parseInt(document.getElementById("c_mg").value) || 0) + (parseInt(document.getElementById("c_pd").value) || 0);
             const ai = parseInt(document.getElementById("ai").value) || 0;
             const VR = parseInt(document.getElementById("VR").value) || 0;
@@ -170,15 +157,16 @@
             const itc = parseInt(document.getElementById("itc").value) || 0;
             const mod = parseInt(document.getElementById("mod").value) || 0;
             const mac = opm + itc + mod;
+
             const total_cost = ep_cost + labor_c + dp_c + Tec + mac;
 
             let resultHTML = "";
-            resultHTML += "<p>Equipment cost: " + ep_cost + "</p>";
-            resultHTML += "<p>Labor cost: " + labor_c + "</p>";
-            resultHTML += "<p>Number of Personnel: " + n_p + "</p>";
-            resultHTML += "<p>Content development and digital asset production cost: " + dp_c + "</p>";
-            resultHTML += "<p>Technology cost: " + Tec + "</p>";
-            resultHTML += "<p>Cost of project management and coordination: " + mac + "</p>";
+            resultHTML += "<p>Equipment cost: $" + ep_cost + "</p>";
+            resultHTML += "<p>Labor cost: $" + labor_c + "</p>";
+            resultHTML += "<p>Number of items imaged: " + n_items + "</p>";
+            resultHTML += "<p>Content development and digital asset production cost: $" + dp_c + "</p>";
+            resultHTML += "<p>Technology cost: $" + Tec + "</p>";
+            resultHTML += "<p>Cost of project management and coordination: $" + mac + "</p>";
             resultHTML += "<h2>Total cost: $" + total_cost + "</h2>";
             document.getElementById("details").innerHTML = resultHTML;
 
