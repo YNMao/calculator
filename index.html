@@ -114,12 +114,16 @@
             <input type="number" id="VR" name="VR" required><br>
             <label for="ai">Cost of AI/ML system:</label>
             <input type="number" id="ai" name="ai" required><br>
+            <label for="rfid">Cost of RFID System:</label> 
+            <input type="number" id="rfid" name="rfid" required><br>
             <label for="opm">Cost of ongoing project management:</label>
             <input type="number" id="opm" name="opm" required><br>
             <label for="itc">Cost of interdisciplinary team coordination:</label>
             <input type="number" id="itc" name="itc" required><br>
             <label for="mod">Cost of monitoring and optimizing the digitization process:</label>
             <input type="number" id="mod" name="mod" required><br>
+            <label for="cad">Cost of Collaborate with artists and designers:</label> 
+            <input type="number" id="cad" name="cad" required><br>
             <button onclick="calculateCost()">Calculate</button>
         </div>
         <div id="cost-breakdown">
@@ -152,11 +156,14 @@
             const dp_c = (parseInt(document.getElementById("c_mg").value) || 0) + (parseInt(document.getElementById("c_pd").value) || 0);
             const ai = parseInt(document.getElementById("ai").value) || 0;
             const VR = parseInt(document.getElementById("VR").value) || 0;
-            const Tec = ai + VR;
+            const rfid = parseInt(document.getElementById("rfid").value) || 0;
+            const Tec = ai + VR + rfid; 
+
             const opm = parseInt(document.getElementById("opm").value) || 0;
             const itc = parseInt(document.getElementById("itc").value) || 0;
             const mod = parseInt(document.getElementById("mod").value) || 0;
-            const mac = opm + itc + mod;
+            const cad = parseInt(document.getElementById("cad").value) || 0; 
+            const mac = opm + itc + mod + cad;
 
             const total_cost = ep_cost + labor_c + dp_c + Tec + mac;
 
@@ -227,3 +234,4 @@
     </script>
 </body>
 </html>
+
