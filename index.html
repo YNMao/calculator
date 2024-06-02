@@ -116,14 +116,29 @@
             <input type="number" id="ai" name="ai" required><br>
             <label for="rfid">Cost of RFID System:</label> 
             <input type="number" id="rfid" name="rfid" required><br>
-            <label for="opm">Cost of ongoing project management:</label>
-            <input type="number" id="opm" name="opm" required><br>
+            
             <label for="itc">Cost of interdisciplinary team coordination:</label>
             <input type="number" id="itc" name="itc" required><br>
             <label for="mod">Cost of monitoring and optimizing the digitization process:</label>
             <input type="number" id="mod" name="mod" required><br>
-            <label for="cad">Cost of Collaborate with artists and designers:</label> 
+            <br>
+            <br>
+            <h2>Cost of Miscellaneous section</h2>
+            <label for="opm">Cost of ongoing project management:</label>
+            <input type="number" id="opm" name="opm" required><br>
+            <label for="cad">Cost of collaborate with artists and designers:</label> 
             <input type="number" id="cad" name="cad" required><br>
+            
+            <label for="coqc">Cost of quality control:</label> 
+            <input type="number" id="coqc" name="coqc" required><br>
+
+
+            <label for="coos">Cost of office supplies:</label> 
+            <input type="number" id="coos" name="coos" required><br>
+            <label for="comao">Cost of marketing and outreach:</label> 
+            <input type="number" id="comao" name="comao" required><br>
+            <label for="comr">Cost of maintenance and repairs:</label> 
+            <input type="number" id="comr" name="comr" required><br>
             <button onclick="calculateCost()">Calculate</button>
         </div>
         <div id="cost-breakdown">
@@ -163,9 +178,16 @@
             const itc = parseInt(document.getElementById("itc").value) || 0;
             const mod = parseInt(document.getElementById("mod").value) || 0;
             const cad = parseInt(document.getElementById("cad").value) || 0; 
-            const mac = opm + itc + mod + cad;
+            const coqc = parseInt(document.getElementById("coqc").value) || 0; 
+            const coos = parseInt(document.getElementById("coos").value) || 0; 
+            const comr = parseInt(document.getElementById("comr").value) || 0; 
+            const comao = parseInt(document.getElementById("comao").value) || 0; 
+            const mac = itc + mod;
 
-            const total_cost = ep_cost + labor_c + dp_c + Tec + mac;
+            const misc = opm+cad+coqc+coos+comr+comao;
+
+            const total_cost = ep_cost + labor_c + dp_c + Tec + mac + misc;
+
 
             let resultHTML = "";
             resultHTML += "<p>Equipment cost: $" + ep_cost + "</p>";
@@ -173,7 +195,8 @@
             resultHTML += "<p>Number of items imaged: " + n_items + "</p>";
             resultHTML += "<p>Content development and digital asset production cost: $" + dp_c + "</p>";
             resultHTML += "<p>Technology cost: $" + Tec + "</p>";
-            resultHTML += "<p>Cost of project management and coordination: $" + mac + "</p>";
+            resultHTML += "<p>Project management and coordination cost: $" + mac + "</p>";
+            resultHTML += "<p>Miscellaneous Cost: $"+misc+"</p>";
             resultHTML += "<h2>Total cost: $" + total_cost + "</h2>";
             document.getElementById("details").innerHTML = resultHTML;
 
@@ -234,4 +257,5 @@
     </script>
 </body>
 </html>
+
 
